@@ -23,14 +23,14 @@ class ImageConverter(Node):
 
     def listener_callback(self, msg):
         try:
-            np_arr = np.fromstring(msg.data, np.uint8)
+            np_arr = np.array(msg.data)
             input_image = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
         except CvBridgeError as e:
             print(e)
             return
 
         try:
-            ros_image = self.bridge.cv2_to_imgmsg(input_image, 'rgb8')
+            ros_image = self.bridge.cv2_to_imgmsg(input_image, 'bgr8')
             self.publisher_.publish(ros_image)
         except CvBridgeError as e:
             print(e)
